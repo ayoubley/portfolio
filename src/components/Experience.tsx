@@ -48,7 +48,7 @@ export default function Experience() {
         <ScrollReveal>
           <div className="text-center mb-16">
             <div className="inline-flex items-center gap-2 glass-card rounded-full px-4 py-2 mb-6">
-              <span className="w-1.5 h-1.5 rounded-full bg-accent" />
+              <span className="w-1.5 h-1.5 rounded-full bg-foreground/50" />
               <span className="text-sm text-muted">Career Journey</span>
             </div>
             <h2 className="text-4xl md:text-5xl font-bold tracking-tight">
@@ -74,9 +74,9 @@ export default function Experience() {
                   i % 2 === 0 ? "md:flex-row-reverse" : ""
                 }`}
               >
-                <div className="absolute left-0 md:left-1/2 top-8 w-3 h-3 rounded-full bg-accent -translate-x-[6px] md:-translate-x-[6px] z-10">
+                <div className="absolute left-0 md:left-1/2 top-8 w-3 h-3 rounded-full bg-foreground -translate-x-[6px] md:-translate-x-[6px] z-10">
                   <motion.div
-                    className="absolute inset-0 rounded-full bg-accent"
+                    className="absolute inset-0 rounded-full bg-foreground"
                     animate={{ scale: [1, 1.8, 1], opacity: [0.5, 0, 0.5] }}
                     transition={{ duration: 2, repeat: Infinity }}
                   />
@@ -86,17 +86,17 @@ export default function Experience() {
 
                 <div className="flex-1 md:w-1/2 pl-8 md:pl-0">
                   <div
-                    className={`glass-card rounded-2xl p-6 hover:border-accent/20 transition-all duration-300 ${
+                    className={`glass-card rounded-2xl p-6 hover:border-white/15 transition-all duration-300 ${
                       i % 2 === 0 ? "md:mr-8" : "md:ml-8"
                     }`}
                   >
                     <div className="flex items-center gap-3 mb-3">
-                      <span className="text-xs px-3 py-1 rounded-full bg-accent/10 text-accent font-medium">
+                      <span className="text-xs px-3 py-1 rounded-full bg-white/10 text-foreground/70 font-medium">
                         {exp.period}
                       </span>
                     </div>
                     <h3 className="text-lg font-semibold mb-1">{exp.role}</h3>
-                    <p className="text-sm text-accent mb-3">{exp.company}</p>
+                    <p className="text-sm text-muted mb-3">{exp.company}</p>
                     <p className="text-sm text-muted leading-relaxed">
                       {exp.description}
                     </p>

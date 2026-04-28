@@ -67,7 +67,7 @@ export default function Skills() {
         <ScrollReveal>
           <div className="text-center mb-16">
             <div className="inline-flex items-center gap-2 glass-card rounded-full px-4 py-2 mb-6">
-              <span className="w-1.5 h-1.5 rounded-full bg-accent" />
+              <span className="w-1.5 h-1.5 rounded-full bg-foreground/50" />
               <span className="text-sm text-muted">Skills & Expertise</span>
             </div>
             <h2 className="text-4xl md:text-5xl font-bold tracking-tight">
@@ -79,7 +79,7 @@ export default function Skills() {
         <div className="grid md:grid-cols-2 gap-6">
           {skillCategories.map((category, categoryIndex) => (
             <ScrollReveal key={category.title} delay={categoryIndex * 0.1}>
-              <div className="glass-card rounded-2xl p-8 hover:border-accent/20 transition-all duration-300 group h-full">
+              <div className="glass-card rounded-2xl p-8 hover:border-white/15 transition-all duration-300 group h-full">
                 <div className="flex items-center gap-4 mb-6">
                   <span className="text-2xl">{category.icon}</span>
                   <h3 className="text-xl font-semibold">{category.title}</h3>
@@ -92,7 +92,7 @@ export default function Skills() {
                       whileInView={{ opacity: 1, scale: 1 }}
                       transition={{ delay: categoryIndex * 0.1 + skillIndex * 0.05 }}
                       viewport={{ once: true }}
-                      whileHover={{ scale: 1.05, backgroundColor: "rgba(99, 102, 241, 0.15)" }}
+                      whileHover={{ scale: 1.05, backgroundColor: "rgba(255, 255, 255, 0.08)" }}
                       className="px-3 py-1.5 text-sm rounded-full glass-card text-muted hover:text-foreground transition-colors cursor-default"
                     >
                       {skill}

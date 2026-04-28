@@ -13,23 +13,23 @@
 }
 
 :root {
-  --background: #0a0a0f;
-  --foreground: #f0f0f5;
-  --card: rgba(255, 255, 255, 0.03);
-  --card-border: rgba(255, 255, 255, 0.06);
-  --muted: #8b8b9e;
-  --accent: #6366f1;
-  --accent-hover: #818cf8;
+  --background: #0a0a0a;
+  --foreground: #ffffff;
+  --card: rgba(255, 255, 255, 0.04);
+  --card-border: rgba(255, 255, 255, 0.08);
+  --muted: #888888;
+  --accent: #ffffff;
+  --accent-hover: #cccccc;
 }
 
 .light {
   --background: #fafafa;
-  --foreground: #0a0a0f;
-  --card: rgba(0, 0, 0, 0.02);
-  --card-border: rgba(0, 0, 0, 0.06);
-  --muted: #6b7280;
-  --accent: #4f46e5;
-  --accent-hover: #6366f1;
+  --foreground: #0a0a0a;
+  --card: rgba(0, 0, 0, 0.03);
+  --card-border: rgba(0, 0, 0, 0.08);
+  --muted: #666666;
+  --accent: #0a0a0a;
+  --accent-hover: #333333;
   scrollbar-color: rgba(0, 0, 0, 0.15) transparent;
 }
 
@@ -50,8 +50,8 @@ body {
 }
 
 ::selection {
-  background: var(--accent);
-  color: white;
+  background: var(--foreground);
+  color: var(--background);
 }
 
 .noise-bg {
@@ -71,7 +71,7 @@ body {
   height: 500px;
   border-radius: 50%;
   filter: blur(120px);
-  opacity: 0.15;
+  opacity: 0.08;
   pointer-events: none;
   z-index: 0;
 }
@@ -89,8 +89,8 @@ body {
 }
 
 @keyframes pulse-glow {
-  0%, 100% { opacity: 0.15; }
-  50% { opacity: 0.25; }
+  0%, 100% { opacity: 0.08; }
+  50% { opacity: 0.15; }
 }
 
 .animate-float {
@@ -102,8 +102,6 @@ body {
 }
 
 .text-gradient {
-  background: linear-gradient(135deg, var(--accent) 0%, #a855f7 50%, #ec4899 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--muted);
+  font-style: italic;
 }

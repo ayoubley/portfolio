@@ -14,7 +14,7 @@ export default function About() {
       <div className="max-w-7xl mx-auto">
         <ScrollReveal>
           <div className="inline-flex items-center gap-2 glass-card rounded-full px-4 py-2 mb-6">
-            <span className="w-1.5 h-1.5 rounded-full bg-accent" />
+            <span className="w-1.5 h-1.5 rounded-full bg-foreground/50" />
             <span className="text-sm text-muted">About Me</span>
           </div>
         </ScrollReveal>
@@ -62,8 +62,8 @@ export default function About() {
           <div className="space-y-6">
             {highlights.map((item, i) => (
               <ScrollReveal key={item.label} delay={0.2 + i * 0.1} direction="left">
-                <div className="glass-card rounded-2xl p-8 hover:border-accent/20 transition-colors duration-300">
-                  <div className="text-4xl font-bold text-gradient mb-2">
+                <div className="glass-card rounded-2xl p-8 hover:border-white/20 transition-colors duration-300">
+                  <div className="text-4xl font-bold mb-2">
                     {item.value}
                   </div>
                   <div className="text-muted text-sm">{item.label}</div>

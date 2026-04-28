@@ -61,7 +61,7 @@ export default function Contact() {
         <ScrollReveal>
           <div className="text-center mb-16">
             <div className="inline-flex items-center gap-2 glass-card rounded-full px-4 py-2 mb-6">
-              <span className="w-1.5 h-1.5 rounded-full bg-accent" />
+              <span className="w-1.5 h-1.5 rounded-full bg-foreground/50" />
               <span className="text-sm text-muted">Get In Touch</span>
             </div>
             <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-4">
@@ -93,7 +93,7 @@ export default function Contact() {
                     onChange={(e) =>
                       setFormState({ ...formState, name: e.target.value })
                     }
-                    className="w-full px-4 py-3 rounded-xl glass-card bg-transparent text-foreground placeholder-muted/50 focus:outline-none focus:border-accent/50 transition-colors"
+                    className="w-full px-4 py-3 rounded-xl glass-card bg-transparent text-foreground placeholder-muted/50 focus:outline-none focus:border-white/30 transition-colors"
                     placeholder="Your name"
                     required
                   />
@@ -112,7 +112,7 @@ export default function Contact() {
                     onChange={(e) =>
                       setFormState({ ...formState, email: e.target.value })
                     }
-                    className="w-full px-4 py-3 rounded-xl glass-card bg-transparent text-foreground placeholder-muted/50 focus:outline-none focus:border-accent/50 transition-colors"
+                    className="w-full px-4 py-3 rounded-xl glass-card bg-transparent text-foreground placeholder-muted/50 focus:outline-none focus:border-white/30 transition-colors"
                     placeholder="your@email.com"
                     required
                   />
@@ -132,7 +132,7 @@ export default function Contact() {
                     setFormState({ ...formState, message: e.target.value })
                   }
                   rows={6}
-                  className="w-full px-4 py-3 rounded-xl glass-card bg-transparent text-foreground placeholder-muted/50 focus:outline-none focus:border-accent/50 transition-colors resize-none"
+                  className="w-full px-4 py-3 rounded-xl glass-card bg-transparent text-foreground placeholder-muted/50 focus:outline-none focus:border-white/30 transition-colors resize-none"
                   placeholder="Tell me about your project..."
                   required
                 />
@@ -141,7 +141,7 @@ export default function Contact() {
                 type="submit"
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                className="w-full sm:w-auto px-8 py-3.5 bg-accent hover:bg-accent-hover rounded-full text-white text-sm font-medium transition-colors duration-300 cursor-pointer"
+                className="w-full sm:w-auto px-8 py-3.5 bg-foreground text-background rounded-full text-sm font-medium hover:opacity-80 transition-all duration-300 cursor-pointer"
               >
                 {isSubmitted ? "Opening Email Client..." : "Send Message"}
               </motion.button>
@@ -168,7 +168,7 @@ export default function Contact() {
                     rel="noopener noreferrer"
                     className="flex items-center gap-4 p-3 rounded-xl hover:bg-white/5 transition-colors duration-200 group"
                   >
-                    <div className="w-10 h-10 rounded-full glass-card flex items-center justify-center text-muted group-hover:text-accent transition-colors">
+                    <div className="w-10 h-10 rounded-full glass-card flex items-center justify-center text-muted group-hover:text-foreground transition-colors">
                       {link.icon}
                     </div>
                     <span className="text-sm text-muted group-hover:text-foreground transition-colors">

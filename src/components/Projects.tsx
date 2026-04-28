@@ -9,7 +9,6 @@ interface Project {
   description: string;
   tags: string[];
   category: string;
-  gradient: string;
 }
 
 const projects: Project[] = [
@@ -19,7 +18,6 @@ const projects: Project[] = [
       "Complete brand identity and website redesign for a digital agency. Focused on bold typography, dark aesthetics, and conversion-optimized layouts.",
     tags: ["Branding", "UI Design", "Web Design"],
     category: "Design",
-    gradient: "from-indigo-500/20 to-purple-500/20",
   },
   {
     title: "AtomAI Platform",
@@ -27,7 +25,6 @@ const projects: Project[] = [
       "Modern SaaS dashboard design for an AI-powered automation platform. Clean interfaces with data visualization and intuitive user flows.",
     tags: ["UI/UX", "SaaS", "Dashboard"],
     category: "Design",
-    gradient: "from-cyan-500/20 to-blue-500/20",
   },
   {
     title: "Premium Domain Portfolio",
@@ -35,7 +32,6 @@ const projects: Project[] = [
       "Strategic acquisition and branding of high-value domain names. Building digital asset portfolios with strong market positioning.",
     tags: ["Domain Investing", "Strategy", "Branding"],
     category: "Digital Strategy",
-    gradient: "from-emerald-500/20 to-teal-500/20",
   },
   {
     title: "E-Commerce Experience",
@@ -43,7 +39,6 @@ const projects: Project[] = [
       "End-to-end design for a luxury fashion e-commerce platform with immersive product showcases and seamless checkout flows.",
     tags: ["E-Commerce", "UI/UX", "Responsive"],
     category: "Design",
-    gradient: "from-pink-500/20 to-rose-500/20",
   },
   {
     title: "Growth Marketing System",
@@ -51,7 +46,6 @@ const projects: Project[] = [
       "Comprehensive digital marketing strategy and visual assets for a tech startup, resulting in 200% conversion improvement.",
     tags: ["Marketing", "Strategy", "Growth"],
     category: "Digital Strategy",
-    gradient: "from-orange-500/20 to-amber-500/20",
   },
   {
     title: "Creative Studio Website",
@@ -59,7 +53,6 @@ const projects: Project[] = [
       "Award-worthy portfolio website for a creative studio. Featuring smooth animations, micro-interactions, and premium aesthetics.",
     tags: ["Web Design", "Animation", "Framer"],
     category: "Design",
-    gradient: "from-violet-500/20 to-fuchsia-500/20",
   },
 ];
 
@@ -79,12 +72,12 @@ export default function Projects() {
         <ScrollReveal>
           <div className="text-center mb-12">
             <div className="inline-flex items-center gap-2 glass-card rounded-full px-4 py-2 mb-6">
-              <span className="w-1.5 h-1.5 rounded-full bg-accent" />
+              <span className="w-1.5 h-1.5 rounded-full bg-foreground/50" />
               <span className="text-sm text-muted">Selected Work</span>
             </div>
             <h2 className="text-4xl md:text-5xl font-bold tracking-tight">
               Featured{" "}
-              <span className="text-gradient italic font-light">Projects</span>
+              <span className="text-gradient">Projects</span>
             </h2>
           </div>
         </ScrollReveal>
@@ -97,7 +90,7 @@ export default function Projects() {
                 onClick={() => setActiveCategory(cat)}
                 className={`px-5 py-2 text-sm rounded-full transition-all duration-300 cursor-pointer ${
                   activeCategory === cat
-                    ? "bg-accent text-white"
+                    ? "bg-foreground text-background"
                     : "glass-card text-muted hover:text-foreground"
                 }`}
               >
@@ -118,16 +111,14 @@ export default function Projects() {
                 exit={{ opacity: 0, scale: 0.9 }}
                 transition={{ duration: 0.3 }}
               >
-                <div className="group glass-card rounded-2xl overflow-hidden hover:border-accent/20 transition-all duration-500 h-full flex flex-col">
-                  <div
-                    className={`h-48 bg-gradient-to-br ${project.gradient} flex items-center justify-center relative overflow-hidden`}
-                  >
+                <div className="group glass-card rounded-2xl overflow-hidden hover:border-white/15 transition-all duration-500 h-full flex flex-col">
+                  <div className="h-48 bg-white/[0.03] flex items-center justify-center relative overflow-hidden">
                     <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent" />
                     <motion.div
                       className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
                       style={{
                         background:
-                          "radial-gradient(circle at 50% 50%, rgba(99,102,241,0.15), transparent 70%)",
+                          "radial-gradient(circle at 50% 50%, rgba(255,255,255,0.05), transparent 70%)",
                       }}
                     />
                     <span className="text-4xl relative z-10 group-hover:scale-110 transition-transform duration-500">
@@ -137,11 +128,11 @@ export default function Projects() {
 
                   <div className="p-6 flex flex-col flex-1">
                     <div className="flex items-center justify-between mb-3">
-                      <h3 className="text-lg font-semibold group-hover:text-accent transition-colors duration-300">
+                      <h3 className="text-lg font-semibold group-hover:text-foreground transition-colors duration-300">
                         {project.title}
                       </h3>
                       <svg
-                        className="w-4 h-4 text-muted group-hover:text-accent group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-300"
+                        className="w-4 h-4 text-muted group-hover:text-foreground group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-300"
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"

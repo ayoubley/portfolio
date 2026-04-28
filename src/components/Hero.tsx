@@ -5,9 +5,9 @@ import { motion } from "framer-motion";
 export default function Hero() {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden px-6">
-      <div className="gradient-blur bg-indigo-500/30 -top-20 -left-20 animate-pulse-glow" />
-      <div className="gradient-blur bg-purple-500/20 top-1/3 right-0 animate-pulse-glow" style={{ animationDelay: "2s" }} />
-      <div className="gradient-blur bg-pink-500/10 bottom-0 left-1/3 animate-pulse-glow" style={{ animationDelay: "4s" }} />
+      <div className="gradient-blur bg-white/10 -top-20 -left-20 animate-pulse-glow" />
+      <div className="gradient-blur bg-white/5 top-1/3 right-0 animate-pulse-glow" style={{ animationDelay: "2s" }} />
+      <div className="gradient-blur bg-white/5 bottom-0 left-1/3 animate-pulse-glow" style={{ animationDelay: "4s" }} />
 
       <div className="relative z-10 max-w-5xl mx-auto text-center">
         <motion.div
@@ -16,7 +16,7 @@ export default function Hero() {
           transition={{ duration: 0.6, delay: 0.2 }}
           className="inline-flex items-center gap-2 glass-card rounded-full px-4 py-2 mb-8"
         >
-          <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
+          <span className="w-2 h-2 rounded-full bg-white/60 animate-pulse" />
           <span className="text-sm text-muted">
             Designer & Digital Strategist
           </span>
@@ -29,7 +29,7 @@ export default function Hero() {
           className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight leading-[1.05] mb-6"
         >
           Ayoub{" "}
-          <span className="text-gradient italic font-light">Bensadek</span>
+          <span className="text-gradient">Bensadek</span>
         </motion.h1>
 
         <motion.p
@@ -51,10 +51,9 @@ export default function Hero() {
         >
           <a
             href="#projects"
-            className="group relative px-8 py-3.5 bg-accent hover:bg-accent-hover rounded-full text-white text-sm font-medium transition-all duration-300 overflow-hidden"
+            className="px-8 py-3.5 bg-foreground text-background rounded-full text-sm font-medium hover:opacity-80 transition-all duration-300"
           >
-            <span className="relative z-10">View Projects</span>
-            <div className="absolute inset-0 bg-gradient-to-r from-indigo-600 to-purple-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            View Projects
           </a>
           <a
             href="#contact"

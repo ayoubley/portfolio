@@ -43,7 +43,7 @@ export default function ThemeToggle() {
       aria-label="Toggle theme"
     >
       <motion.div
-        className="w-5 h-5 rounded-full bg-accent"
+        className="w-5 h-5 rounded-full bg-foreground"
         animate={{ x: isDark ? 0 : 26 }}
         transition={{ type: "spring", stiffness: 500, damping: 30 }}
       />
