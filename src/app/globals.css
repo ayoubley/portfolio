@@ -30,6 +30,7 @@
   --muted: #6b7280;
   --accent: #4f46e5;
   --accent-hover: #6366f1;
+  scrollbar-color: rgba(0, 0, 0, 0.15) transparent;
 }
 
 * {

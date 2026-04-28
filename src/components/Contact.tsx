@@ -44,6 +44,12 @@ export default function Contact() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    const { name, email, message } = formState;
+    const subject = encodeURIComponent(`Portfolio Contact from ${name}`);
+    const body = encodeURIComponent(
+      `Name: ${name}\nEmail: ${email}\n\n${message}`
+    );
+    window.location.href = `mailto:businessionew@gmail.com?subject=${subject}&body=${body}`;
     setIsSubmitted(true);
     setTimeout(() => setIsSubmitted(false), 3000);
     setFormState({ name: "", email: "", message: "" });
@@ -137,7 +143,7 @@ export default function Contact() {
                 whileTap={{ scale: 0.98 }}
                 className="w-full sm:w-auto px-8 py-3.5 bg-accent hover:bg-accent-hover rounded-full text-white text-sm font-medium transition-colors duration-300 cursor-pointer"
               >
-                {isSubmitted ? "Message Sent!" : "Send Message"}
+                {isSubmitted ? "Opening Email Client..." : "Send Message"}
               </motion.button>
             </form>
           </ScrollReveal>
