@@ -164,8 +164,10 @@ export default function Contact() {
                   <a
                     key={link.label}
                     href={link.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                    {...(!link.href.startsWith("mailto:") && {
+                      target: "_blank",
+                      rel: "noopener noreferrer",
+                    })}
                     className="flex items-center gap-4 p-3 rounded-xl hover:bg-foreground/5 transition-colors duration-200 group"
                   >
                     <div className="w-10 h-10 rounded-full glass-card flex items-center justify-center text-muted group-hover:text-foreground transition-colors">
