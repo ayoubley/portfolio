@@ -5,9 +5,9 @@ import { motion } from "framer-motion";
 export default function Hero() {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden px-6">
-      <div className="gradient-blur bg-white/10 -top-20 -left-20 animate-pulse-glow" />
-      <div className="gradient-blur bg-white/5 top-1/3 right-0 animate-pulse-glow" style={{ animationDelay: "2s" }} />
-      <div className="gradient-blur bg-white/5 bottom-0 left-1/3 animate-pulse-glow" style={{ animationDelay: "4s" }} />
+      <div className="gradient-blur bg-foreground/10 -top-20 -left-20 animate-pulse-glow" />
+      <div className="gradient-blur bg-foreground/5 top-1/3 right-0 animate-pulse-glow" style={{ animationDelay: "2s" }} />
+      <div className="gradient-blur bg-foreground/5 bottom-0 left-1/3 animate-pulse-glow" style={{ animationDelay: "4s" }} />
 
       <div className="relative z-10 max-w-5xl mx-auto text-center">
         <motion.div
@@ -16,7 +16,7 @@ export default function Hero() {
           transition={{ duration: 0.6, delay: 0.2 }}
           className="inline-flex items-center gap-2 glass-card rounded-full px-4 py-2 mb-8"
         >
-          <span className="w-2 h-2 rounded-full bg-white/60 animate-pulse" />
+          <span className="w-2 h-2 rounded-full bg-foreground/60 animate-pulse" />
           <span className="text-sm text-muted">
             Designer & Digital Strategist
           </span>
@@ -57,7 +57,7 @@ export default function Hero() {
           </a>
           <a
             href="#contact"
-            className="px-8 py-3.5 glass-card rounded-full text-sm font-medium hover:bg-white/10 transition-all duration-300"
+            className="px-8 py-3.5 glass-card rounded-full text-sm font-medium hover:bg-foreground/10 transition-all duration-300"
           >
             Contact Me
           </a>

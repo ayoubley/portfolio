@@ -111,14 +111,14 @@ export default function Projects() {
                 exit={{ opacity: 0, scale: 0.9 }}
                 transition={{ duration: 0.3 }}
               >
-                <div className="group glass-card rounded-2xl overflow-hidden hover:border-white/15 transition-all duration-500 h-full flex flex-col">
-                  <div className="h-48 bg-white/[0.03] flex items-center justify-center relative overflow-hidden">
+                <div className="group glass-card rounded-2xl overflow-hidden hover:border-foreground/15 transition-all duration-500 h-full flex flex-col">
+                  <div className="h-48 bg-foreground/[0.03] flex items-center justify-center relative overflow-hidden">
                     <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent" />
                     <motion.div
                       className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
                       style={{
                         background:
-                          "radial-gradient(circle at 50% 50%, rgba(255,255,255,0.05), transparent 70%)",
+                          "radial-gradient(circle at 50% 50%, var(--foreground-glow, rgba(255,255,255,0.05)), transparent 70%)",
                       }}
                     />
                     <span className="text-4xl relative z-10 group-hover:scale-110 transition-transform duration-500">

@@ -62,7 +62,7 @@ export default function About() {
           <div className="space-y-6">
             {highlights.map((item, i) => (
               <ScrollReveal key={item.label} delay={0.2 + i * 0.1} direction="left">
-                <div className="glass-card rounded-2xl p-8 hover:border-white/20 transition-colors duration-300">
+                <div className="glass-card rounded-2xl p-8 hover:border-foreground/15 transition-colors duration-300">
                   <div className="text-4xl font-bold mb-2">
                     {item.value}
                   </div>

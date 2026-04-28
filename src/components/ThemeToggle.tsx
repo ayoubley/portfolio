@@ -1,6 +1,6 @@
 "use client";
 
-import { useSyncExternalStore } from "react";
+import { useEffect, useSyncExternalStore } from "react";
 import { motion } from "framer-motion";
 
 function getThemeSnapshot(): boolean {
@@ -16,21 +16,19 @@ function subscribeTheme(callback: () => void) {
 export default function ThemeToggle() {
   const isDark = useSyncExternalStore(subscribeTheme, getThemeSnapshot, () => true);
 
-  if (typeof document !== "undefined") {
+  useEffect(() => {
     if (isDark) {
       document.documentElement.classList.remove("light");
     } else {
       document.documentElement.classList.add("light");
     }
-  }
+  }, [isDark]);
 
   const toggle = () => {
     if (isDark) {
       localStorage.setItem("theme", "light");
-      document.documentElement.classList.add("light");
     } else {
       localStorage.setItem("theme", "dark");
-      document.documentElement.classList.remove("light");
     }
     window.dispatchEvent(new StorageEvent("storage"));
   };

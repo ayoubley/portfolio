@@ -63,7 +63,7 @@ export default function CursorFollower() {
         style={{ backgroundColor: "white" }}
       />
       <motion.div
-        className="fixed top-0 left-0 pointer-events-none z-[9998] rounded-full border border-white/20"
+        className="fixed top-0 left-0 pointer-events-none z-[9998] rounded-full border border-foreground/20"
         animate={{
           x: position.x - 25,
           y: position.y - 25,

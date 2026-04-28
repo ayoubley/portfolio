@@ -93,7 +93,7 @@ export default function Contact() {
                     onChange={(e) =>
                       setFormState({ ...formState, name: e.target.value })
                     }
-                    className="w-full px-4 py-3 rounded-xl glass-card bg-transparent text-foreground placeholder-muted/50 focus:outline-none focus:border-white/30 transition-colors"
+                    className="w-full px-4 py-3 rounded-xl glass-card bg-transparent text-foreground placeholder-muted/50 focus:outline-none focus:border-foreground/30 transition-colors"
                     placeholder="Your name"
                     required
                   />
@@ -112,7 +112,7 @@ export default function Contact() {
                     onChange={(e) =>
                       setFormState({ ...formState, email: e.target.value })
                     }
-                    className="w-full px-4 py-3 rounded-xl glass-card bg-transparent text-foreground placeholder-muted/50 focus:outline-none focus:border-white/30 transition-colors"
+                    className="w-full px-4 py-3 rounded-xl glass-card bg-transparent text-foreground placeholder-muted/50 focus:outline-none focus:border-foreground/30 transition-colors"
                     placeholder="your@email.com"
                     required
                   />
@@ -132,7 +132,7 @@ export default function Contact() {
                     setFormState({ ...formState, message: e.target.value })
                   }
                   rows={6}
-                  className="w-full px-4 py-3 rounded-xl glass-card bg-transparent text-foreground placeholder-muted/50 focus:outline-none focus:border-white/30 transition-colors resize-none"
+                  className="w-full px-4 py-3 rounded-xl glass-card bg-transparent text-foreground placeholder-muted/50 focus:outline-none focus:border-foreground/30 transition-colors resize-none"
                   placeholder="Tell me about your project..."
                   required
                 />
@@ -166,7 +166,7 @@ export default function Contact() {
                     href={link.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-4 p-3 rounded-xl hover:bg-white/5 transition-colors duration-200 group"
+                    className="flex items-center gap-4 p-3 rounded-xl hover:bg-foreground/5 transition-colors duration-200 group"
                   >
                     <div className="w-10 h-10 rounded-full glass-card flex items-center justify-center text-muted group-hover:text-foreground transition-colors">
                       {link.icon}

@@ -86,12 +86,12 @@ export default function Experience() {
 
                 <div className="flex-1 md:w-1/2 pl-8 md:pl-0">
                   <div
-                    className={`glass-card rounded-2xl p-6 hover:border-white/15 transition-all duration-300 ${
+                    className={`glass-card rounded-2xl p-6 hover:border-foreground/15 transition-all duration-300 ${
                       i % 2 === 0 ? "md:mr-8" : "md:ml-8"
                     }`}
                   >
                     <div className="flex items-center gap-3 mb-3">
-                      <span className="text-xs px-3 py-1 rounded-full bg-white/10 text-foreground/70 font-medium">
+                      <span className="text-xs px-3 py-1 rounded-full bg-foreground/10 text-foreground/70 font-medium">
                         {exp.period}
                       </span>
                     </div>
