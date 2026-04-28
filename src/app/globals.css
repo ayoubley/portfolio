@@ -41,6 +41,7 @@
   scrollbar-color: rgba(255, 255, 255, 0.1) transparent;
 }
 
+.light,
 .light * {
   scrollbar-color: rgba(0, 0, 0, 0.15) transparent;
 }
