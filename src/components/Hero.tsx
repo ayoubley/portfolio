@@ -1,10 +1,15 @@
 "use client";
 
+import { useRef } from "react";
 import { motion } from "framer-motion";
+import FluidSmoke from "./SmokeEffect";
 
 export default function Hero() {
+  const sectionRef = useRef<HTMLElement>(null);
+
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden px-6">
+    <section ref={sectionRef} className="relative min-h-screen flex items-center justify-center overflow-hidden px-6">
+      <FluidSmoke containerRef={sectionRef} />
       <div className="gradient-blur bg-foreground/10 -top-20 -left-20 animate-pulse-glow" />
       <div className="gradient-blur bg-foreground/5 top-1/3 right-0 animate-pulse-glow" style={{ animationDelay: "2s" }} />
       <div className="gradient-blur bg-foreground/5 bottom-0 left-1/3 animate-pulse-glow" style={{ animationDelay: "4s" }} />

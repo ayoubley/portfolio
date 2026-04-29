@@ -1,8 +1,14 @@
 "use client";
 
+import { useRef } from "react";
+import FluidSmoke from "./SmokeEffect";
+
 export default function Footer() {
+  const footerRef = useRef<HTMLElement>(null);
+
   return (
-    <footer className="relative py-12 px-6 border-t border-card-border">
+    <footer ref={footerRef} className="relative py-12 px-6 border-t border-card-border overflow-hidden">
+      <FluidSmoke containerRef={footerRef} />
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
         <div className="text-sm text-muted">
           &copy; {new Date().getFullYear()} Ayoub Bensadek. All rights reserved.
