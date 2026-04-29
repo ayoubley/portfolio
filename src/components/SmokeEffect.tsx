@@ -30,7 +30,6 @@ export default function FluidSmoke({
   const animFrameRef = useRef<number>(0);
   const mouseRef = useRef({ x: -9999, y: -9999, prevX: 0, prevY: 0 });
   const isActiveRef = useRef(false);
-  const isDarkRef = useRef(true);
 
   const spawnBlobs = useCallback(
     (mx: number, my: number, dx: number, dy: number, speed: number) => {
@@ -98,16 +97,6 @@ export default function FluidSmoke({
     );
     intersectionObs.observe(container);
 
-    const checkTheme = () => {
-      isDarkRef.current = !document.documentElement.classList.contains("light");
-    };
-    checkTheme();
-    const themeObs = new MutationObserver(checkTheme);
-    themeObs.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ["class"],
-    });
-
     let lastX = -1;
     let lastY = -1;
 
@@ -162,8 +151,7 @@ export default function FluidSmoke({
     window.addEventListener("mousemove", handleMouseMove);
 
     const drawBlob = (p: FluidBlob) => {
-      const dark = isDarkRef.current;
-      const c = dark ? 255 : 0;
+      const c = 255;
 
       ctx.save();
       ctx.translate(p.x, p.y);
@@ -250,7 +238,6 @@ export default function FluidSmoke({
       window.removeEventListener("mousemove", handleMouseMove);
       resizeObs.disconnect();
       intersectionObs.disconnect();
-      themeObs.disconnect();
     };
   }, [containerRef, spawnBlobs]);
 
