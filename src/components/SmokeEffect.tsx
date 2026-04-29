@@ -123,8 +123,11 @@ export default function FluidSmoke({
         localY < 0 ||
         localX > rect.width ||
         localY > rect.height
-      )
+      ) {
+        lastX = -1;
+        lastY = -1;
         return;
+      }
 
       if (lastX < 0) {
         lastX = localX;
