@@ -24,6 +24,7 @@ export default function SmokeEffect({ position }: SmokeEffectProps) {
   const particlesRef = useRef<Particle[]>([]);
   const mouseRef = useRef({ x: -1000, y: -1000 });
   const animFrameRef = useRef<number>(0);
+  const isDarkRef = useRef(true);
 
   const createParticle = useCallback(
     (canvasWidth: number, canvasHeight: number): Particle => {
@@ -85,6 +86,17 @@ export default function SmokeEffect({ position }: SmokeEffectProps) {
       };
     };
 
+    const checkTheme = () => {
+      isDarkRef.current = !document.documentElement.classList.contains("light");
+    };
+    checkTheme();
+
+    const observer = new MutationObserver(checkTheme);
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["class"],
+    });
+
     window.addEventListener("mousemove", handleMouseMove);
 
     const animate = () => {
@@ -138,10 +150,15 @@ export default function SmokeEffect({ position }: SmokeEffectProps) {
           p.y,
           p.radius
         );
-        gradient.addColorStop(0, `rgba(255, 255, 255, ${p.opacity})`);
-        gradient.addColorStop(0.3, `rgba(230, 230, 230, ${p.opacity * 0.7})`);
-        gradient.addColorStop(0.6, `rgba(200, 200, 200, ${p.opacity * 0.3})`);
-        gradient.addColorStop(1, `rgba(180, 180, 180, 0)`);
+        const dark = isDarkRef.current;
+        const c0 = dark ? 255 : 0;
+        const c1 = dark ? 230 : 30;
+        const c2 = dark ? 200 : 60;
+        const c3 = dark ? 180 : 80;
+        gradient.addColorStop(0, `rgba(${c0}, ${c0}, ${c0}, ${p.opacity})`);
+        gradient.addColorStop(0.3, `rgba(${c1}, ${c1}, ${c1}, ${p.opacity * 0.7})`);
+        gradient.addColorStop(0.6, `rgba(${c2}, ${c2}, ${c2}, ${p.opacity * 0.3})`);
+        gradient.addColorStop(1, `rgba(${c3}, ${c3}, ${c3}, 0)`);
 
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
@@ -158,6 +175,7 @@ export default function SmokeEffect({ position }: SmokeEffectProps) {
       cancelAnimationFrame(animFrameRef.current);
       window.removeEventListener("resize", handleResize);
       window.removeEventListener("mousemove", handleMouseMove);
+      observer.disconnect();
     };
   }, [createParticle]);
 
