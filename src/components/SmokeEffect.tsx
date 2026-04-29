@@ -2,25 +2,28 @@
 
 import { useEffect, useRef } from "react";
 
-interface TrailParticle {
+interface FluidBlob {
   x: number;
   y: number;
   vx: number;
   vy: number;
   radius: number;
+  baseRadius: number;
   opacity: number;
   maxOpacity: number;
   life: number;
   maxLife: number;
+  angle: number;
+  rotSpeed: number;
+  stretch: number;
 }
 
 const EDGE_ZONE = 0.25;
 
 export default function SmokeEffect() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const particlesRef = useRef<TrailParticle[]>([]);
+  const blobsRef = useRef<FluidBlob[]>([]);
   const animFrameRef = useRef<number>(0);
-  const isDarkRef = useRef(true);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -41,28 +44,14 @@ export default function SmokeEffect() {
     handleResize();
     window.addEventListener("resize", handleResize);
 
-    const checkTheme = () => {
-      isDarkRef.current = !document.documentElement.classList.contains("light");
-    };
-    checkTheme();
-
-    const observer = new MutationObserver(checkTheme);
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ["class"],
-    });
-
     const getEdgeStrength = (clientY: number): number => {
       const vh = window.innerHeight;
       const topEdge = vh * EDGE_ZONE;
       const bottomStart = vh * (1 - EDGE_ZONE);
 
-      if (clientY <= topEdge) {
-        return 1 - clientY / topEdge;
-      }
-      if (clientY >= bottomStart) {
+      if (clientY <= topEdge) return 1 - clientY / topEdge;
+      if (clientY >= bottomStart)
         return (clientY - bottomStart) / (vh - bottomStart);
-      }
       return 0;
     };
 
@@ -75,6 +64,7 @@ export default function SmokeEffect() {
         lastY = e.clientY;
         return;
       }
+
       const dx = e.clientX - lastX;
       const dy = e.clientY - lastY;
       const speed = Math.sqrt(dx * dx + dy * dy);
@@ -82,81 +72,97 @@ export default function SmokeEffect() {
       lastY = e.clientY;
 
       const strength = getEdgeStrength(e.clientY);
-      if (strength <= 0) return;
+      if (strength <= 0 || speed < 2) return;
 
-      const count = Math.min(Math.floor(speed * 0.3 * strength) + 3, 8);
+      const moveAngle = Math.atan2(dy, dx);
+      const count = Math.min(Math.floor(speed * 0.15 * strength) + 2, 8);
 
       for (let i = 0; i < count; i++) {
-        const angle = Math.random() * Math.PI * 2;
-        const spread = 5 + Math.random() * 20;
-        particlesRef.current.push({
-          x: e.clientX + Math.cos(angle) * spread,
-          y: e.clientY + Math.sin(angle) * spread,
-          vx: (Math.random() - 0.5) * 1.0 + dx * 0.04,
-          vy: (Math.random() - 0.5) * 1.0 + dy * 0.04 - 0.5,
-          radius: 20 + Math.random() * 50,
+        const spread = 3 + Math.random() * 8;
+        const angleOff = (Math.random() - 0.5) * 0.6;
+        const spawnAngle = moveAngle + Math.PI + angleOff;
+
+        blobsRef.current.push({
+          x: e.clientX + Math.cos(spawnAngle) * spread,
+          y: e.clientY + Math.sin(spawnAngle) * spread,
+          vx: dx * 0.35 + (Math.random() - 0.5) * 0.8,
+          vy: dy * 0.35 + (Math.random() - 0.5) * 0.8,
+          radius: 0,
+          baseRadius: 18 + Math.random() * 35 + speed * 0.4,
           opacity: 0,
-          maxOpacity: (0.4 + Math.random() * 0.4) * strength,
+          maxOpacity: (0.7 + Math.random() * 0.25) * strength,
           life: 0,
-          maxLife: 60 + Math.random() * 60,
+          maxLife: 35 + Math.random() * 25,
+          angle: moveAngle + (Math.random() - 0.5) * 0.3,
+          rotSpeed: (Math.random() - 0.5) * 0.04,
+          stretch: 1 + speed * 0.018,
         });
       }
 
-      if (particlesRef.current.length > 400) {
-        particlesRef.current = particlesRef.current.slice(-400);
+      if (blobsRef.current.length > 300) {
+        blobsRef.current = blobsRef.current.slice(-300);
       }
     };
 
     window.addEventListener("mousemove", handleMouseMove);
 
+    const drawBlob = (p: FluidBlob) => {
+      ctx.save();
+      ctx.translate(p.x, p.y);
+      ctx.rotate(p.angle);
+      ctx.scale(p.stretch, 1 / Math.sqrt(p.stretch));
+
+      const gradient = ctx.createRadialGradient(0, 0, 0, 0, 0, p.radius);
+      gradient.addColorStop(0, `rgba(255,255,255,${p.opacity})`);
+      gradient.addColorStop(0.3, `rgba(255,255,255,${p.opacity * 0.9})`);
+      gradient.addColorStop(0.6, `rgba(255,255,255,${p.opacity * 0.5})`);
+      gradient.addColorStop(0.8, `rgba(255,255,255,${p.opacity * 0.15})`);
+      gradient.addColorStop(1, "rgba(255,255,255,0)");
+
+      ctx.fillStyle = gradient;
+      ctx.beginPath();
+      ctx.arc(0, 0, p.radius, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    };
+
     const animate = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      const alive: TrailParticle[] = [];
+      const alive: FluidBlob[] = [];
 
-      for (const p of particlesRef.current) {
+      for (const p of blobsRef.current) {
         p.life++;
-        const lifeRatio = p.life / p.maxLife;
+        const t = p.life / p.maxLife;
 
-        if (lifeRatio < 0.1) {
-          p.opacity = (lifeRatio / 0.1) * p.maxOpacity;
-        } else if (lifeRatio < 0.4) {
+        if (t < 0.08) {
+          p.opacity = (t / 0.08) * p.maxOpacity;
+          p.radius = p.baseRadius * (t / 0.08);
+        } else if (t < 0.35) {
           p.opacity = p.maxOpacity;
+          p.radius = p.baseRadius + (t - 0.08) * 10;
         } else {
-          p.opacity = p.maxOpacity * (1 - (lifeRatio - 0.4) / 0.6);
+          const fadeT = (t - 0.35) / 0.65;
+          p.opacity = p.maxOpacity * (1 - fadeT * fadeT);
+          p.radius = p.baseRadius + 0.27 * 10 + fadeT * 12;
         }
 
-        p.radius += 0.6;
-        p.vx *= 0.94;
-        p.vy *= 0.94;
+        p.vx *= 0.96;
+        p.vy *= 0.96;
+        p.vy -= 0.03;
         p.x += p.vx;
         p.y += p.vy;
+        p.angle += p.rotSpeed;
+        p.rotSpeed *= 0.99;
+        p.stretch += (1 - p.stretch) * 0.03;
 
-        if (p.life < p.maxLife && p.opacity > 0.005) {
+        if (p.life < p.maxLife && p.opacity > 0.01) {
           alive.push(p);
-
-          const dark = isDarkRef.current;
-          const c0 = dark ? 255 : 0;
-          const c1 = dark ? 240 : 20;
-          const c2 = dark ? 200 : 50;
-
-          const gradient = ctx.createRadialGradient(
-            p.x, p.y, 0,
-            p.x, p.y, p.radius
-          );
-          gradient.addColorStop(0, `rgba(${c0}, ${c0}, ${c0}, ${p.opacity})`);
-          gradient.addColorStop(0.3, `rgba(${c0}, ${c0}, ${c0}, ${p.opacity * 0.7})`);
-          gradient.addColorStop(0.6, `rgba(${c1}, ${c1}, ${c1}, ${p.opacity * 0.3})`);
-          gradient.addColorStop(1, `rgba(${c2}, ${c2}, ${c2}, 0)`);
-
-          ctx.beginPath();
-          ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-          ctx.fillStyle = gradient;
-          ctx.fill();
+          drawBlob(p);
         }
       }
 
-      particlesRef.current = alive;
+      blobsRef.current = alive;
       animFrameRef.current = requestAnimationFrame(animate);
     };
 
@@ -166,14 +172,14 @@ export default function SmokeEffect() {
       cancelAnimationFrame(animFrameRef.current);
       window.removeEventListener("resize", handleResize);
       window.removeEventListener("mousemove", handleMouseMove);
-      observer.disconnect();
     };
   }, []);
 
   return (
     <canvas
       ref={canvasRef}
-      className="fixed inset-0 w-full h-full pointer-events-none z-[1]"
+      className="fixed inset-0 w-full h-full pointer-events-none z-[2]"
+      style={{ mixBlendMode: "difference" }}
     />
   );
 }
