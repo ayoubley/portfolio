@@ -1,54 +1,26 @@
 "use client";
 
-import { useEffect, useRef, useCallback } from "react";
+import { useEffect, useRef } from "react";
 
-interface Particle {
+interface TrailParticle {
   x: number;
   y: number;
   vx: number;
   vy: number;
   radius: number;
   opacity: number;
+  maxOpacity: number;
   life: number;
   maxLife: number;
-  baseY: number;
-  baseX: number;
 }
 
-interface SmokeEffectProps {
-  position: "top" | "bottom";
-}
+const EDGE_ZONE = 0.25;
 
-export default function SmokeEffect({ position }: SmokeEffectProps) {
+export default function SmokeEffect() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const particlesRef = useRef<Particle[]>([]);
-  const mouseRef = useRef({ x: -1000, y: -1000 });
+  const particlesRef = useRef<TrailParticle[]>([]);
   const animFrameRef = useRef<number>(0);
   const isDarkRef = useRef(true);
-
-  const createParticle = useCallback(
-    (canvasWidth: number, canvasHeight: number): Particle => {
-      const x = Math.random() * canvasWidth;
-      const baseY =
-        position === "top"
-          ? Math.random() * canvasHeight * 0.7
-          : canvasHeight * 0.3 + Math.random() * canvasHeight * 0.7;
-
-      return {
-        x,
-        y: baseY,
-        vx: (Math.random() - 0.5) * 0.4,
-        vy: (Math.random() - 0.5) * 0.15,
-        radius: 60 + Math.random() * 120,
-        opacity: 0,
-        life: 0,
-        maxLife: 300 + Math.random() * 400,
-        baseY,
-        baseX: x,
-      };
-    },
-    [position]
-  );
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -63,28 +35,11 @@ export default function SmokeEffect({ position }: SmokeEffectProps) {
 
     const handleResize = () => {
       canvas.width = window.innerWidth;
-      canvas.height = 350;
+      canvas.height = window.innerHeight;
     };
 
     handleResize();
     window.addEventListener("resize", handleResize);
-
-    const particleCount = 40;
-    particlesRef.current = Array.from({ length: particleCount }, () =>
-      createParticle(canvas.width, canvas.height)
-    );
-
-    particlesRef.current.forEach((p, i) => {
-      p.life = (i / particleCount) * p.maxLife;
-    });
-
-    const handleMouseMove = (e: MouseEvent) => {
-      const rect = canvas.getBoundingClientRect();
-      mouseRef.current = {
-        x: e.clientX - rect.left,
-        y: e.clientY - rect.top,
-      };
-    };
 
     const checkTheme = () => {
       isDarkRef.current = !document.documentElement.classList.contains("light");
@@ -97,75 +52,102 @@ export default function SmokeEffect({ position }: SmokeEffectProps) {
       attributeFilter: ["class"],
     });
 
+    const getEdgeStrength = (clientY: number): number => {
+      const vh = window.innerHeight;
+      const topEdge = vh * EDGE_ZONE;
+      const bottomStart = vh * (1 - EDGE_ZONE);
+
+      if (clientY <= topEdge) {
+        return 1 - clientY / topEdge;
+      }
+      if (clientY >= bottomStart) {
+        return (clientY - bottomStart) / (vh - bottomStart);
+      }
+      return 0;
+    };
+
+    let lastX = 0;
+    let lastY = 0;
+
+    const handleMouseMove = (e: MouseEvent) => {
+      const dx = e.clientX - lastX;
+      const dy = e.clientY - lastY;
+      const speed = Math.sqrt(dx * dx + dy * dy);
+      lastX = e.clientX;
+      lastY = e.clientY;
+
+      const strength = getEdgeStrength(e.clientY);
+      if (strength <= 0) return;
+
+      const count = Math.min(Math.floor(speed * 0.15 * strength) + 1, 4);
+
+      for (let i = 0; i < count; i++) {
+        const angle = Math.random() * Math.PI * 2;
+        const spread = 8 + Math.random() * 12;
+        particlesRef.current.push({
+          x: e.clientX + Math.cos(angle) * spread,
+          y: e.clientY + Math.sin(angle) * spread,
+          vx: (Math.random() - 0.5) * 0.6 + dx * 0.02,
+          vy: (Math.random() - 0.5) * 0.6 + dy * 0.02 - 0.3,
+          radius: 15 + Math.random() * 30,
+          opacity: 0,
+          maxOpacity: (0.08 + Math.random() * 0.1) * strength,
+          life: 0,
+          maxLife: 40 + Math.random() * 50,
+        });
+      }
+
+      if (particlesRef.current.length > 150) {
+        particlesRef.current = particlesRef.current.slice(-150);
+      }
+    };
+
     window.addEventListener("mousemove", handleMouseMove);
 
     const animate = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      particlesRef.current.forEach((p) => {
+      const alive: TrailParticle[] = [];
+
+      for (const p of particlesRef.current) {
         p.life++;
-
         const lifeRatio = p.life / p.maxLife;
-        const maxOpacity = 0.18;
-        if (lifeRatio < 0.1) {
-          p.opacity = (lifeRatio / 0.1) * maxOpacity;
-        } else if (lifeRatio > 0.65) {
-          p.opacity = ((1 - lifeRatio) / 0.35) * maxOpacity;
+
+        if (lifeRatio < 0.15) {
+          p.opacity = (lifeRatio / 0.15) * p.maxOpacity;
         } else {
-          p.opacity = maxOpacity;
+          p.opacity = p.maxOpacity * (1 - (lifeRatio - 0.15) / 0.85);
         }
 
-        const dx = p.x - mouseRef.current.x;
-        const dy = p.y - mouseRef.current.y;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-        const mouseInfluence = 200;
-
-        if (dist < mouseInfluence && dist > 0) {
-          const force = ((mouseInfluence - dist) / mouseInfluence) * 1.2;
-          p.vx += (dx / dist) * force;
-          p.vy += (dy / dist) * force;
-        }
-
-        p.vx *= 0.96;
-        p.vy *= 0.96;
-
-        p.vy += (p.baseY - p.y) * 0.002;
-        p.vx += (p.baseX - p.x) * 0.0005;
-
+        p.radius += 0.4;
+        p.vx *= 0.95;
+        p.vy *= 0.95;
         p.x += p.vx;
         p.y += p.vy;
 
-        if (p.x < -p.radius) p.x = canvas.width + p.radius;
-        if (p.x > canvas.width + p.radius) p.x = -p.radius;
+        if (p.life < p.maxLife && p.opacity > 0.001) {
+          alive.push(p);
 
-        if (p.life >= p.maxLife) {
-          Object.assign(p, createParticle(canvas.width, canvas.height));
+          const dark = isDarkRef.current;
+          const c0 = dark ? 255 : 0;
+          const c1 = dark ? 220 : 40;
+
+          const gradient = ctx.createRadialGradient(
+            p.x, p.y, 0,
+            p.x, p.y, p.radius
+          );
+          gradient.addColorStop(0, `rgba(${c0}, ${c0}, ${c0}, ${p.opacity})`);
+          gradient.addColorStop(0.5, `rgba(${c1}, ${c1}, ${c1}, ${p.opacity * 0.4})`);
+          gradient.addColorStop(1, `rgba(${c1}, ${c1}, ${c1}, 0)`);
+
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+          ctx.fillStyle = gradient;
+          ctx.fill();
         }
+      }
 
-        const gradient = ctx.createRadialGradient(
-          p.x,
-          p.y,
-          0,
-          p.x,
-          p.y,
-          p.radius
-        );
-        const dark = isDarkRef.current;
-        const c0 = dark ? 255 : 0;
-        const c1 = dark ? 230 : 30;
-        const c2 = dark ? 200 : 60;
-        const c3 = dark ? 180 : 80;
-        gradient.addColorStop(0, `rgba(${c0}, ${c0}, ${c0}, ${p.opacity})`);
-        gradient.addColorStop(0.3, `rgba(${c1}, ${c1}, ${c1}, ${p.opacity * 0.7})`);
-        gradient.addColorStop(0.6, `rgba(${c2}, ${c2}, ${c2}, ${p.opacity * 0.3})`);
-        gradient.addColorStop(1, `rgba(${c3}, ${c3}, ${c3}, 0)`);
-
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-        ctx.fillStyle = gradient;
-        ctx.fill();
-      });
-
+      particlesRef.current = alive;
       animFrameRef.current = requestAnimationFrame(animate);
     };
 
@@ -177,25 +159,12 @@ export default function SmokeEffect({ position }: SmokeEffectProps) {
       window.removeEventListener("mousemove", handleMouseMove);
       observer.disconnect();
     };
-  }, [createParticle]);
+  }, []);
 
   return (
     <canvas
       ref={canvasRef}
-      className={`fixed left-0 w-full pointer-events-none z-[1] ${
-        position === "top" ? "top-0" : "bottom-0"
-      }`}
-      style={{
-        height: "350px",
-        maskImage:
-          position === "top"
-            ? "linear-gradient(to bottom, black 0%, black 30%, transparent 100%)"
-            : "linear-gradient(to top, black 0%, black 30%, transparent 100%)",
-        WebkitMaskImage:
-          position === "top"
-            ? "linear-gradient(to bottom, black 0%, black 30%, transparent 100%)"
-            : "linear-gradient(to top, black 0%, black 30%, transparent 100%)",
-      }}
+      className="fixed inset-0 w-full h-full pointer-events-none z-[1]"
     />
   );
 }
