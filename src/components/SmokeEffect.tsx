@@ -34,30 +34,30 @@ export default function FluidSmoke({
 
   const spawnBlobs = useCallback(
     (mx: number, my: number, dx: number, dy: number, speed: number) => {
-      const count = Math.min(Math.floor(speed * 0.12) + 2, 6);
+      const count = Math.min(Math.floor(speed * 0.15) + 2, 8);
       const moveAngle = Math.atan2(dy, dx);
 
       for (let i = 0; i < count; i++) {
-        const spread = 5 + Math.random() * 15;
-        const angleOff = (Math.random() - 0.5) * 1.2;
+        const spread = 3 + Math.random() * 8;
+        const angleOff = (Math.random() - 0.5) * 0.6;
         const spawnAngle = moveAngle + Math.PI + angleOff;
 
         blobsRef.current.push({
           x: mx + Math.cos(spawnAngle) * spread,
           y: my + Math.sin(spawnAngle) * spread,
-          vx: dx * 0.15 + (Math.random() - 0.5) * 1.5,
-          vy: dy * 0.15 + (Math.random() - 0.5) * 1.5,
-          targetX: mx + dx * 2,
-          targetY: my + dy * 2,
+          vx: dx * 0.35 + (Math.random() - 0.5) * 0.8,
+          vy: dy * 0.35 + (Math.random() - 0.5) * 0.8,
+          targetX: mx + dx * 3,
+          targetY: my + dy * 3,
           radius: 0,
-          baseRadius: 25 + Math.random() * 45 + speed * 0.3,
+          baseRadius: 18 + Math.random() * 35 + speed * 0.4,
           opacity: 0,
-          maxOpacity: 0.6 + Math.random() * 0.35,
+          maxOpacity: 0.7 + Math.random() * 0.25,
           life: 0,
-          maxLife: 50 + Math.random() * 40,
-          angle: Math.random() * Math.PI * 2,
-          rotSpeed: (Math.random() - 0.5) * 0.08,
-          stretch: 1 + speed * 0.008,
+          maxLife: 35 + Math.random() * 25,
+          angle: moveAngle + (Math.random() - 0.5) * 0.3,
+          rotSpeed: (Math.random() - 0.5) * 0.04,
+          stretch: 1 + speed * 0.018,
         });
       }
 
@@ -168,7 +168,7 @@ export default function FluidSmoke({
       ctx.save();
       ctx.translate(p.x, p.y);
       ctx.rotate(p.angle);
-      ctx.scale(p.stretch, 2 - p.stretch);
+      ctx.scale(p.stretch, 1 / Math.sqrt(p.stretch));
 
       const gradient = ctx.createRadialGradient(0, 0, 0, 0, 0, p.radius);
       gradient.addColorStop(
@@ -176,12 +176,16 @@ export default function FluidSmoke({
         `rgba(${c}, ${c}, ${c}, ${p.opacity})`
       );
       gradient.addColorStop(
-        0.4,
-        `rgba(${c}, ${c}, ${c}, ${p.opacity * 0.8})`
+        0.3,
+        `rgba(${c}, ${c}, ${c}, ${p.opacity * 0.9})`
       );
       gradient.addColorStop(
-        0.7,
-        `rgba(${c}, ${c}, ${c}, ${p.opacity * 0.35})`
+        0.6,
+        `rgba(${c}, ${c}, ${c}, ${p.opacity * 0.5})`
+      );
+      gradient.addColorStop(
+        0.8,
+        `rgba(${c}, ${c}, ${c}, ${p.opacity * 0.15})`
       );
       gradient.addColorStop(1, `rgba(${c}, ${c}, ${c}, 0)`);
 
@@ -201,33 +205,33 @@ export default function FluidSmoke({
         p.life++;
         const t = p.life / p.maxLife;
 
-        if (t < 0.12) {
-          p.opacity = (t / 0.12) * p.maxOpacity;
-          p.radius = p.baseRadius * (t / 0.12);
-        } else if (t < 0.45) {
+        if (t < 0.08) {
+          p.opacity = (t / 0.08) * p.maxOpacity;
+          p.radius = p.baseRadius * (t / 0.08);
+        } else if (t < 0.35) {
           p.opacity = p.maxOpacity;
-          p.radius = p.baseRadius + (t - 0.12) * 15;
+          p.radius = p.baseRadius + (t - 0.08) * 10;
         } else {
-          const fadeT = (t - 0.45) / 0.55;
+          const fadeT = (t - 0.35) / 0.65;
           p.opacity = p.maxOpacity * (1 - fadeT * fadeT);
-          p.radius = p.baseRadius + 0.33 * 15 + fadeT * 20;
+          p.radius = p.baseRadius + 0.27 * 10 + fadeT * 12;
         }
 
-        p.vx *= 0.92;
-        p.vy *= 0.92;
+        p.vx *= 0.96;
+        p.vy *= 0.96;
 
-        p.vx += (p.targetX - p.x) * 0.003;
-        p.vy += (p.targetY - p.y) * 0.003;
+        p.vx += (p.targetX - p.x) * 0.005;
+        p.vy += (p.targetY - p.y) * 0.005;
 
-        p.vy -= 0.08;
+        p.vy -= 0.03;
 
         p.x += p.vx;
         p.y += p.vy;
 
         p.angle += p.rotSpeed;
-        p.rotSpeed *= 0.98;
+        p.rotSpeed *= 0.99;
 
-        p.stretch += (1 - p.stretch) * 0.05;
+        p.stretch += (1 - p.stretch) * 0.03;
 
         if (p.life < p.maxLife && p.opacity > 0.01) {
           alive.push(p);
