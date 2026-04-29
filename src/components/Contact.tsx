@@ -56,15 +56,15 @@ export default function Contact() {
   };
 
   return (
-    <section id="contact" className="relative py-16 px-6">
+    <section id="contact" className="relative py-10 px-6">
       <div className="max-w-5xl mx-auto">
         <ScrollReveal>
-          <div className="text-center mb-8">
-            <div className="inline-flex items-center gap-2 glass-card rounded-full px-4 py-2 mb-4">
+          <div className="text-center mb-5">
+            <div className="inline-flex items-center gap-2 glass-card rounded-full px-4 py-2 mb-3">
               <span className="w-1.5 h-1.5 rounded-full bg-foreground/50" />
               <span className="text-sm text-muted">Get In Touch</span>
             </div>
-            <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-3">
+            <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-2">
               Let&apos;s Work{" "}
               <span className="text-gradient italic font-light">Together</span>
             </h2>
@@ -75,9 +75,9 @@ export default function Contact() {
           </div>
         </ScrollReveal>
 
-        <div className="grid lg:grid-cols-5 gap-8">
+        <div className="grid lg:grid-cols-5 gap-6">
           <ScrollReveal delay={0.1} className="lg:col-span-3">
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form onSubmit={handleSubmit} className="space-y-3">
               <div className="grid sm:grid-cols-2 gap-4">
                 <div>
                   <label
@@ -131,7 +131,7 @@ export default function Contact() {
                   onChange={(e) =>
                     setFormState({ ...formState, message: e.target.value })
                   }
-                  rows={3}
+                  rows={2}
                   className="w-full px-4 py-3 rounded-xl glass-card bg-transparent text-foreground placeholder-muted/50 focus:outline-none focus:border-foreground/30 transition-colors resize-none"
                   placeholder="Tell me about your project..."
                   required
@@ -149,7 +149,7 @@ export default function Contact() {
           </ScrollReveal>
 
           <ScrollReveal delay={0.2} direction="left" className="lg:col-span-2">
-            <div className="glass-card rounded-2xl p-8 h-full flex flex-col justify-between">
+            <div className="glass-card rounded-2xl p-6 h-full flex flex-col justify-between">
               <div>
                 <h3 className="text-lg font-semibold mb-2">
                   Contact Information
@@ -168,7 +168,7 @@ export default function Contact() {
                       target: "_blank",
                       rel: "noopener noreferrer",
                     })}
-                    className="flex items-center gap-4 p-3 rounded-xl hover:bg-foreground/5 transition-colors duration-200 group"
+                    className="flex items-center gap-3 p-2 rounded-xl hover:bg-foreground/5 transition-colors duration-200 group"
                   >
                     <div className="w-10 h-10 rounded-full glass-card flex items-center justify-center text-muted group-hover:text-foreground transition-colors">
                       {link.icon}
