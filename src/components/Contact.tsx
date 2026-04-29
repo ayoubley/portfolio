@@ -56,29 +56,29 @@ export default function Contact() {
   };
 
   return (
-    <section id="contact" className="relative py-32 px-6">
+    <section id="contact" className="relative py-16 px-6">
       <div className="max-w-5xl mx-auto">
         <ScrollReveal>
-          <div className="text-center mb-16">
-            <div className="inline-flex items-center gap-2 glass-card rounded-full px-4 py-2 mb-6">
+          <div className="text-center mb-8">
+            <div className="inline-flex items-center gap-2 glass-card rounded-full px-4 py-2 mb-4">
               <span className="w-1.5 h-1.5 rounded-full bg-foreground/50" />
               <span className="text-sm text-muted">Get In Touch</span>
             </div>
-            <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-4">
+            <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-3">
               Let&apos;s Work{" "}
               <span className="text-gradient italic font-light">Together</span>
             </h2>
-            <p className="text-muted text-lg max-w-xl mx-auto">
+            <p className="text-muted text-base max-w-xl mx-auto">
               Have a project in mind? Let&apos;s create something extraordinary
               together.
             </p>
           </div>
         </ScrollReveal>
 
-        <div className="grid lg:grid-cols-5 gap-12">
+        <div className="grid lg:grid-cols-5 gap-8">
           <ScrollReveal delay={0.1} className="lg:col-span-3">
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="grid sm:grid-cols-2 gap-6">
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div className="grid sm:grid-cols-2 gap-4">
                 <div>
                   <label
                     htmlFor="name"
@@ -131,7 +131,7 @@ export default function Contact() {
                   onChange={(e) =>
                     setFormState({ ...formState, message: e.target.value })
                   }
-                  rows={6}
+                  rows={3}
                   className="w-full px-4 py-3 rounded-xl glass-card bg-transparent text-foreground placeholder-muted/50 focus:outline-none focus:border-foreground/30 transition-colors resize-none"
                   placeholder="Tell me about your project..."
                   required
@@ -154,7 +154,7 @@ export default function Contact() {
                 <h3 className="text-lg font-semibold mb-2">
                   Contact Information
                 </h3>
-                <p className="text-sm text-muted mb-8">
+                <p className="text-sm text-muted mb-4">
                   Feel free to reach out through any of these channels.
                 </p>
               </div>
@@ -180,7 +180,7 @@ export default function Contact() {
                 ))}
               </div>
 
-              <div className="mt-8 pt-6 border-t border-card-border">
+              <div className="mt-4 pt-4 border-t border-card-border">
                 <p className="text-xs text-muted">
                   Based in Algeria. Available for freelance work worldwide.
                 </p>
