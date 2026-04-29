@@ -66,10 +66,15 @@ export default function SmokeEffect() {
       return 0;
     };
 
-    let lastX = 0;
-    let lastY = 0;
+    let lastX = -1;
+    let lastY = -1;
 
     const handleMouseMove = (e: MouseEvent) => {
+      if (lastX < 0) {
+        lastX = e.clientX;
+        lastY = e.clientY;
+        return;
+      }
       const dx = e.clientX - lastX;
       const dy = e.clientY - lastY;
       const speed = Math.sqrt(dx * dx + dy * dy);
