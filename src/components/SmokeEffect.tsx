@@ -79,26 +79,26 @@ export default function SmokeEffect() {
       const strength = getEdgeStrength(e.clientY);
       if (strength <= 0) return;
 
-      const count = Math.min(Math.floor(speed * 0.15 * strength) + 1, 4);
+      const count = Math.min(Math.floor(speed * 0.3 * strength) + 3, 8);
 
       for (let i = 0; i < count; i++) {
         const angle = Math.random() * Math.PI * 2;
-        const spread = 8 + Math.random() * 12;
+        const spread = 5 + Math.random() * 20;
         particlesRef.current.push({
           x: e.clientX + Math.cos(angle) * spread,
           y: e.clientY + Math.sin(angle) * spread,
-          vx: (Math.random() - 0.5) * 0.6 + dx * 0.02,
-          vy: (Math.random() - 0.5) * 0.6 + dy * 0.02 - 0.3,
-          radius: 15 + Math.random() * 30,
+          vx: (Math.random() - 0.5) * 1.0 + dx * 0.04,
+          vy: (Math.random() - 0.5) * 1.0 + dy * 0.04 - 0.5,
+          radius: 20 + Math.random() * 50,
           opacity: 0,
-          maxOpacity: (0.08 + Math.random() * 0.1) * strength,
+          maxOpacity: (0.4 + Math.random() * 0.4) * strength,
           life: 0,
-          maxLife: 40 + Math.random() * 50,
+          maxLife: 60 + Math.random() * 60,
         });
       }
 
-      if (particlesRef.current.length > 150) {
-        particlesRef.current = particlesRef.current.slice(-150);
+      if (particlesRef.current.length > 400) {
+        particlesRef.current = particlesRef.current.slice(-400);
       }
     };
 
@@ -113,32 +113,36 @@ export default function SmokeEffect() {
         p.life++;
         const lifeRatio = p.life / p.maxLife;
 
-        if (lifeRatio < 0.15) {
-          p.opacity = (lifeRatio / 0.15) * p.maxOpacity;
+        if (lifeRatio < 0.1) {
+          p.opacity = (lifeRatio / 0.1) * p.maxOpacity;
+        } else if (lifeRatio < 0.4) {
+          p.opacity = p.maxOpacity;
         } else {
-          p.opacity = p.maxOpacity * (1 - (lifeRatio - 0.15) / 0.85);
+          p.opacity = p.maxOpacity * (1 - (lifeRatio - 0.4) / 0.6);
         }
 
-        p.radius += 0.4;
-        p.vx *= 0.95;
-        p.vy *= 0.95;
+        p.radius += 0.6;
+        p.vx *= 0.94;
+        p.vy *= 0.94;
         p.x += p.vx;
         p.y += p.vy;
 
-        if (p.life < p.maxLife && p.opacity > 0.001) {
+        if (p.life < p.maxLife && p.opacity > 0.005) {
           alive.push(p);
 
           const dark = isDarkRef.current;
           const c0 = dark ? 255 : 0;
-          const c1 = dark ? 220 : 40;
+          const c1 = dark ? 240 : 20;
+          const c2 = dark ? 200 : 50;
 
           const gradient = ctx.createRadialGradient(
             p.x, p.y, 0,
             p.x, p.y, p.radius
           );
           gradient.addColorStop(0, `rgba(${c0}, ${c0}, ${c0}, ${p.opacity})`);
-          gradient.addColorStop(0.5, `rgba(${c1}, ${c1}, ${c1}, ${p.opacity * 0.4})`);
-          gradient.addColorStop(1, `rgba(${c1}, ${c1}, ${c1}, 0)`);
+          gradient.addColorStop(0.3, `rgba(${c0}, ${c0}, ${c0}, ${p.opacity * 0.7})`);
+          gradient.addColorStop(0.6, `rgba(${c1}, ${c1}, ${c1}, ${p.opacity * 0.3})`);
+          gradient.addColorStop(1, `rgba(${c2}, ${c2}, ${c2}, 0)`);
 
           ctx.beginPath();
           ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
