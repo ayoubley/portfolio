@@ -9,11 +9,14 @@ import Experience from "./Experience";
 import Contact from "./Contact";
 import Footer from "./Footer";
 import CursorFollower from "./CursorFollower";
+import SmokeEffect from "./SmokeEffect";
 
 export default function ClientPage() {
   return (
     <>
       <div className="noise-bg" />
+      <SmokeEffect position="top" />
+      <SmokeEffect position="bottom" />
       <CursorFollower />
       <Navbar />
       <main>
