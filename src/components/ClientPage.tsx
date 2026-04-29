@@ -15,8 +15,7 @@ export default function ClientPage() {
   return (
     <>
       <div className="noise-bg" />
-      <SmokeEffect position="top" />
-      <SmokeEffect position="bottom" />
+      <SmokeEffect />
       <CursorFollower />
       <Navbar />
       <main>
