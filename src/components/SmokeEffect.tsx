@@ -70,14 +70,14 @@ export default function SmokeEffect() {
     let lastY = 0;
 
     const handleMouseMove = (e: MouseEvent) => {
-      const strength = getEdgeStrength(e.clientY);
-      if (strength <= 0) return;
-
       const dx = e.clientX - lastX;
       const dy = e.clientY - lastY;
       const speed = Math.sqrt(dx * dx + dy * dy);
       lastX = e.clientX;
       lastY = e.clientY;
+
+      const strength = getEdgeStrength(e.clientY);
+      if (strength <= 0) return;
 
       const count = Math.min(Math.floor(speed * 0.15 * strength) + 1, 4);
 
