@@ -503,9 +503,15 @@ export default function FluidSimulation() {
       prevX: 0,
       prevY: 0,
       moved: false,
+      initialized: false,
     };
 
     function handleMouseMove(e: MouseEvent) {
+      if (!pointer.initialized) {
+        pointer.x = e.clientX;
+        pointer.y = e.clientY;
+        pointer.initialized = true;
+      }
       pointer.prevX = pointer.x;
       pointer.prevY = pointer.y;
       pointer.x = e.clientX;
@@ -515,6 +521,11 @@ export default function FluidSimulation() {
 
     function handleTouchMove(e: TouchEvent) {
       const touch = e.touches[0];
+      if (!pointer.initialized) {
+        pointer.x = touch.clientX;
+        pointer.y = touch.clientY;
+        pointer.initialized = true;
+      }
       pointer.prevX = pointer.x;
       pointer.prevY = pointer.y;
       pointer.x = touch.clientX;
