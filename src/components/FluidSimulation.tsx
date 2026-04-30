@@ -430,7 +430,23 @@ export default function FluidSimulation() {
     let curlField: FBO;
     let dye: DoubleFBO;
 
+    function destroyFBO(fbo: FBO) {
+      glCtx.deleteTexture(fbo.texture);
+      glCtx.deleteFramebuffer(fbo.fbo);
+    }
+
+    function destroyDoubleFBO(dfbo: DoubleFBO) {
+      destroyFBO(dfbo.read);
+      destroyFBO(dfbo.write);
+    }
+
     function initFramebuffers() {
+      if (velocity) destroyDoubleFBO(velocity);
+      if (pressure) destroyDoubleFBO(pressure);
+      if (divergenceField) destroyFBO(divergenceField);
+      if (curlField) destroyFBO(curlField);
+      if (dye) destroyDoubleFBO(dye);
+
       const simRes = getResolution(SIM_RES);
       const dyeRes = getResolution(DYE_RES);
       const texType = halfFloatTexType;
@@ -604,7 +620,7 @@ export default function FluidSimulation() {
       velocity.swap();
 
       // Advect dye
-      glCtx.uniform2f(advectionProg.uniforms["texelSize"], dye.texelSizeX, dye.texelSizeY);
+      glCtx.uniform2f(advectionProg.uniforms["texelSize"], velocity.texelSizeX, velocity.texelSizeY);
       glCtx.uniform1i(advectionProg.uniforms["uVelocity"], velocity.read.attach(0));
       glCtx.uniform1i(advectionProg.uniforms["uSource"], dye.read.attach(1));
       glCtx.uniform1f(advectionProg.uniforms["dissipation"], DENSITY_DISSIPATION);
